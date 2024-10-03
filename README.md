@@ -1,6 +1,9 @@
 # Interfaces War of C23, C++23, Rust, Go 1.23, Zig and V
 Interfaces War and Styles of C23 (FPs), C++23, Rust (Traits), Go 1.23, Zig and V with JavaScript (Node.js) analyzed.
 
+
+![interfaces-war](docs/tanker.png)
+
 This project will use a non-lanugage specific spec for an `interface API` and generate the language-specific interface constructs in the following languages to analyze their differences. The exception to pure construct of interfaces is C, Rust and Zig. C logical equivalent is a C `struct` with function pointers to dispatch the calls. Rust logical equivalent with signficant differences against its counterparts uses the `Trait` construct. Zig logical equivalent is .....
 
 
