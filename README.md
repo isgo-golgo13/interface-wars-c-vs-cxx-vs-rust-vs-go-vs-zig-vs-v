@@ -20,7 +20,7 @@ The following is the non-language specific interface API spec.
 
 ## C23 Interfaces (Function Pointers)
 
-C does NOT have traditional `interface` language construct and as it provides a logical equivalent through the the use of the a C `struct` containing API spec `function pointers`. This struct serves a `V-table` like a C++ struct or class that contains `pure virtual API`.
+C does NOT have traditional `interface` language construct and as it provides a logical equivalent through the the use of the a C `struct` containing API spec `function pointers`. This struct serves a `v-table` like a C++ struct or class that contains `pure virtual API`.
 
 The C spec for this Dispatcher interface is as follows.
 
@@ -91,6 +91,73 @@ int main() {
 ```
 
 ## C++23 Interfaces
+
+C++ does NOT have traditional `interface` language construct and as it provides a logical equivalent through the the use of the a C++ `struct` or `class` that contains `virtual functions` . This declaration of the virtual functions generates a `v-table` that is indexed to the correct descendant at run-time to satisfy the call.
+
+```C++
+#include <iostream>
+#include <vector>
+#include <chrono>
+
+struct Event {
+    int id;
+};
+
+struct Endpoint {
+    std::string address;
+};
+
+struct Result {
+    int status;
+};
+
+using Ticker = std::chrono::steady_clock::duration;
+
+// Interface (Abstract class) Dispatcher
+class Dispatcher {
+public:
+    virtual Result dispatch_event(const Event& event, const Endpoint& src, const Endpoint& dst) = 0;
+    virtual Result dispatch_events(const std::vector<Event>& events, const Endpoint& src, const Endpoint& dst) = 0;
+    virtual Result dispatch_event_with_timeout(const Event& event, const Endpoint& src, const Endpoint& dst, Ticker timeout) = 0;
+    virtual Result dispatch_events_with_timeout(const std::vector<Event>& events, const Endpoint& src, const Endpoint& dst, Ticker timeout) = 0;
+};
+
+// Concrete implementation of Dispatcher
+class EventDispatcher : public Dispatcher {
+public:
+    Result dispatch_event(const Event& event, const Endpoint& src, const Endpoint& dst) override {
+        std::cout << "Dispatching event with ID " << event.id << " from " << src.address << " to " << dst.address << "\n";
+        return { 0 }; // success
+    }
+
+    Result dispatch_events(const std::vector<Event>& events, const Endpoint& src, const Endpoint& dst) override {
+        for (const auto& event : events) {
+            std::cout << "Dispatching event with ID " << event.id << " from " << src.address << " to " << dst.address << "\n";
+        }
+        return { 0 }; // success
+    }
+
+    Result dispatch_event_with_timeout(const Event& event, const Endpoint& src, const Endpoint& dst, Ticker timeout) override {
+        std::cout << "Dispatching event with timeout...\n";
+        return { 0 }; // success
+    }
+
+    Result dispatch_events_with_timeout(const std::vector<Event>& events, const Endpoint& src, const Endpoint& dst, Ticker timeout) override {
+        std::cout << "Dispatching events with timeout...\n";
+        return { 0 }; // success
+    }
+};
+
+int main() {
+    EventDispatcher dispatcher;
+    Event event{ 1 };
+    Endpoint src{ "Source" };
+    Endpoint dst{ "Destination" };
+    dispatcher.dispatch_event(event, src, dst);
+
+    return 0;
+}
+```
 
 ## Rust Traits
 
