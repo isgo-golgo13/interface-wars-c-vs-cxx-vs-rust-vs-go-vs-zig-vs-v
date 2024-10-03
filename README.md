@@ -161,6 +161,8 @@ int main() {
 
 ## Rust Traits
 
+Rust uses the `Trait` construct. Rust `Traits` like C++ classes with pure virtual functions, can also serve pre-defined "default" function definitions (a Rust trait can have a defaulted definition as C++ pure virtual functions can). Rust traits can apply to Rust types such as `int8, uint8, int16, uint16, int32, uint23, int64, uint64, f32, f64, String, ...`as long as the new trait is in exact scope location as the definition of the trait for any of these types.
+
 ```rust
 use std::time::Duration;
 
@@ -217,10 +219,73 @@ fn main() {
 
     dispatcher.dispatch_event(&event, &src, &dst);
 }
-
 ```
 
 ## Go Interfaces
+
+Go provides an `interface` construct. Go `interfaces`  for the Dispatcher Interface are defined as follows.
+
+
+```shell
+package main
+
+import (
+    "fmt"
+    "time"
+)
+
+type Event struct {
+    ID int
+}
+
+type Endpoint struct {
+    Address string
+}
+
+type Result struct {
+    Status int
+}
+
+type Dispatcher interface {
+    DispatchEvent(event Event, src Endpoint, dst Endpoint) Result
+    DispatchEvents(events []Event, src Endpoint, dst Endpoint) Result
+    DispatchEventWithTimeout(event Event, src Endpoint, dst Endpoint, timeout time.Duration) Result
+    DispatchEventsWithTimeout(events []Event, src Endpoint, dst Endpoint, timeout time.Duration) Result
+}
+
+type MyDispatcher struct{}
+
+func (d MyDispatcher) DispatchEvent(event Event, src Endpoint, dst Endpoint) Result {
+    fmt.Printf("Dispatching event with ID %d from %s to %s\n", event.ID, src.Address, dst.Address)
+    return Result{Status: 0}
+}
+
+func (d MyDispatcher) DispatchEvents(events []Event, src Endpoint, dst Endpoint) Result {
+    for _, event := range events {
+        fmt.Printf("Dispatching event with ID %d from %s to %s\n", event.ID, src.Address, dst.Address)
+    }
+    return Result{Status: 0}
+}
+
+func (d MyDispatcher) DispatchEventWithTimeout(event Event, src Endpoint, dst Endpoint, timeout time.Duration) Result {
+    fmt.Println("Dispatching event with timeout...")
+    return Result{Status: 0}
+}
+
+func (d MyDispatcher) DispatchEventsWithTimeout(events []Event, src Endpoint, dst Endpoint, timeout time.Duration) Result {
+    fmt.Println("Dispatching events with timeout...")
+    return Result{Status: 0}
+}
+
+func main() {
+    dispatcher := MyDispatcher{}
+    event := Event{ID: 1}
+    src := Endpoint{Address: "Source"}
+    dst := Endpoint{Address: "Destination"}
+
+    dispatcher.DispatchEvent(event, src, dst)
+}
+```
 
 ## Zig 
 
