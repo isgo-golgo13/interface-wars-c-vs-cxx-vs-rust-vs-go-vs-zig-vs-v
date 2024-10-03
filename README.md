@@ -253,21 +253,21 @@ type Dispatcher interface {
     DispatchEventsWithTimeout(events []Event, src Endpoint, dst Endpoint, timeout time.Duration) Result
 }
 
-type MyDispatcher struct{}
+type EventDispatcher struct{}
 
-func (d MyDispatcher) DispatchEvent(event Event, src Endpoint, dst Endpoint) Result {
+func (d EventDispatcher) DispatchEvent(event Event, src Endpoint, dst Endpoint) Result {
     fmt.Printf("Dispatching event with ID %d from %s to %s\n", event.ID, src.Address, dst.Address)
     return Result{Status: 0}
 }
 
-func (d MyDispatcher) DispatchEvents(events []Event, src Endpoint, dst Endpoint) Result {
+func (d EventDispatcher) DispatchEvents(events []Event, src Endpoint, dst Endpoint) Result {
     for _, event := range events {
         fmt.Printf("Dispatching event with ID %d from %s to %s\n", event.ID, src.Address, dst.Address)
     }
     return Result{Status: 0}
 }
 
-func (d MyDispatcher) DispatchEventWithTimeout(event Event, src Endpoint, dst Endpoint, timeout time.Duration) Result {
+func (d EventDispatcher) DispatchEventWithTimeout(event Event, src Endpoint, dst Endpoint, timeout time.Duration) Result {
     fmt.Println("Dispatching event with timeout...")
     return Result{Status: 0}
 }
@@ -278,7 +278,7 @@ func (d MyDispatcher) DispatchEventsWithTimeout(events []Event, src Endpoint, ds
 }
 
 func main() {
-    dispatcher := MyDispatcher{}
+    dispatcher := EventDispatcher{}
     event := Event{ID: 1}
     src := Endpoint{Address: "Source"}
     dst := Endpoint{Address: "Destination"}
