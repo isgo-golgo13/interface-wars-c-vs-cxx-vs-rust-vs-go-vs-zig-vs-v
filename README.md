@@ -9,7 +9,8 @@ This project will use a non-lanugage specific spec for an `interface API` and ge
 The following is the non-language specific interface API spec.
 
 Interface Dispatcher
-```code
+
+```C
  - dispatch_event(event: Event, src: Endpoint, dst: Endpoint) return Result 
  - dispatch_events(events: Event[], src: Endpoint, dst: Endpoint) return Result
  - dispatch_event(event: Event, src: Endpoint, dst: Endpoint, timeout: Ticker) return Result 
