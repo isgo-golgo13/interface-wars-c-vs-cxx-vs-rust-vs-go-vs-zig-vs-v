@@ -8,7 +8,7 @@ This project will use a non-lanugage specific spec for an `interface API` and ge
 
 The following is the non-language specific interface API spec.
 
-Interface Dispatcher
+**Interface Dispatcher**
 
 ```C
  - dispatch_event(event: Event, src: Endpoint, dst: Endpoint) return Result 
