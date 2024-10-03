@@ -20,6 +20,76 @@ The following is the non-language specific interface API spec.
 
 ## C23 Interfaces (Function Pointers)
 
+C does NOT have traditional `interface` language construct and as it provides a logical equivalent through the the use of the a C `struct` containing API spec `function pointers`. This struct serves a `V-table` like a C++ struct or class that contains `pure virtual API`.
+
+The C spec for this Dispatcher interface is as follows.
+
+```C
+#include <stdio.h>
+#include <time.h>
+
+typedef struct Event {
+    int id;
+} Event;
+
+typedef struct Endpoint {
+    char address[100];
+} Endpoint;
+
+typedef struct Result {
+    int status;
+} Result;
+
+typedef struct Ticker {
+    struct timespec duration;
+} Ticker;
+
+// Dispatcher Interface using function pointers
+typedef struct Dispatcher {
+    Result (*dispatch_event)(struct Event, struct Endpoint, struct Endpoint);
+    Result (*dispatch_events)(struct Event*, size_t, struct Endpoint, struct Endpoint);
+    Result (*dispatch_event_with_timeout)(struct Event, struct Endpoint, struct Endpoint, struct Ticker);
+    Result (*dispatch_events_with_timeout)(struct Event*, size_t, struct Endpoint, struct Endpoint, struct Ticker);
+} Dispatcher;
+
+Result dispatch_event_impl(struct Event event, struct Endpoint src, struct Endpoint dst) {
+    // implementation
+    Result result = { .status = 0 }; // success
+    printf("Dispatching event with ID %d from %s to %s\n", event.id, src.address, dst.address);
+    return result;
+}
+
+Result dispatch_events_impl(struct Event* events, size_t count, struct Endpoint src, struct Endpoint dst) {
+    // implementation
+    Result result = { .status = 0 }; // success
+    for (size_t i = 0; i < count; ++i) {
+        printf("Dispatching event with ID %d from %s to %s\n", events[i].id, src.address, dst.address);
+    }
+    return result;
+}
+
+// Assigning function implementations to the Dispatcher struct
+Dispatcher create_dispatcher() {
+    Dispatcher dispatcher = {
+        .dispatch_event = dispatch_event_impl,
+        .dispatch_events = dispatch_events_impl,
+        .dispatch_event_with_timeout = NULL, // implement as needed
+        .dispatch_events_with_timeout = NULL // implement as needed
+    };
+    return dispatcher;
+}
+
+int main() {
+    Dispatcher dispatcher = create_dispatcher();
+    struct Event event = { .id = 1 };
+    struct Endpoint src = { .address = "Source" };
+    struct Endpoint dst = { .address = "Destination" };
+
+    dispatcher.dispatch_event(event, src, dst);
+    return 0;
+}
+```
+
 ## C++23 Interfaces
 
 ## Rust Traits
