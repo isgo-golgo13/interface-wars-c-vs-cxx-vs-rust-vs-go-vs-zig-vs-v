@@ -1,5 +1,5 @@
-# Interfaces War of C23, C++23, Rust, Go 1.23, Zig and V
-Interfaces War and Styles of C23 (FPs), C++23, Rust (Traits), Go 1.23, Zig and V with JavaScript (Node.js) analyzed.
+# Interfaces War of C23, C++23, Rust, Go 1.23 and Zig
+Interfaces War and Styles of C23 (FPs), C++23, Rust (Traits), Go 1.23 and Zig
 
 
 ![interfaces-war](docs/tanker.png)
@@ -275,7 +275,7 @@ func (d EventDispatcher) DispatchEventWithTimeout(event Event, src Endpoint, dst
     return Result{Status: 0}
 }
 
-func (d MyDispatcher) DispatchEventsWithTimeout(events []Event, src Endpoint, dst Endpoint, timeout time.Duration) Result {
+func (d EventDispatcher) DispatchEventsWithTimeout(events []Event, src Endpoint, dst Endpoint, timeout time.Duration) Result {
     fmt.Println("Dispatching events with timeout...")
     return Result{Status: 0}
 }
@@ -354,137 +354,6 @@ pub fn main() void {
     dispatcher.dispatchEvent(event, src, dst);
 }
 ```
-
-## V Interfaces
-
-```c
-struct Event {
-    id int
-}
-
-struct Endpoint {
-    address string
-}
-
-struct Result {
-    status int
-}
-
-// Ticker using time library for timeout management
-struct Ticker {
-    duration int // duration in milliseconds
-}
-
-// Dispatcher Interface (mimicked using struct with function pointers)
-struct Dispatcher {
-    dispatch_event_fn fn (event Event, src Endpoint, dst Endpoint) Result
-    dispatch_events_fn fn (events []Event, src Endpoint, dst Endpoint) Result
-    dispatch_event_with_timeout_fn fn (event Event, src Endpoint, dst Endpoint, timeout Ticker) Result
-    dispatch_events_with_timeout_fn fn (events []Event, src Endpoint, dst Endpoint, timeout Ticker) Result
-}
-
-// Implementation of the dispatch_event function
-fn dispatch_event_impl(event Event, src Endpoint, dst Endpoint) Result {
-    println('Dispatching event with ID ${event.id} from ${src.address} to ${dst.address}')
-    return Result{status: 0} // 0 means success
-}
-
-// Implementation of the dispatch_events function
-fn dispatch_events_impl(events []Event, src Endpoint, dst Endpoint) Result {
-    for event in events {
-        println('Dispatching event with ID ${event.id} from ${src.address} to ${dst.address}')
-    }
-    return Result{status: 0} // 0 means success
-}
-
-// Implementation of the dispatch_event_with_timeout function
-fn dispatch_event_with_timeout_impl(event Event, src Endpoint, dst Endpoint, timeout Ticker) Result {
-    println('Dispatching event with ID ${event.id} from ${src.address} to ${dst.address} with a timeout of ${timeout.duration}ms')
-    // Simulating timeout handling with a delay
-    time.sleep(timeout.duration * time.millisecond)
-    return Result{status: 0} // 0 means success
-}
-
-// Implementation of the dispatch_events_with_timeout function
-fn dispatch_events_with_timeout_impl(events []Event, src Endpoint, dst Endpoint, timeout Ticker) Result {
-    println('Dispatching events with a timeout of ${timeout.duration}ms')
-    time.sleep(timeout.duration * time.millisecond)
-    for event in events {
-        println('Dispatching event with ID ${event.id} from ${src.address} to ${dst.address}')
-    }
-    return Result{status: 0} // 0 means success
-}
-
-// Function to create a Dispatcher with its methods initialized
-fn create_dispatcher() Dispatcher {
-    return Dispatcher{
-        dispatch_event_fn: dispatch_event_impl
-        dispatch_events_fn: dispatch_events_impl
-        dispatch_event_with_timeout_fn: dispatch_event_with_timeout_impl
-        dispatch_events_with_timeout_fn: dispatch_events_with_timeout_impl
-    }
-}
-
-fn main() {
-    // Create a dispatcher
-    dispatcher := create_dispatcher()
-
-    // Create an example event and endpoints
-    event := Event{id: 1}
-    src := Endpoint{address: 'Source'}
-    dst := Endpoint{address: 'Destination'}
-
-    // Call the dispatcher functions
-    dispatcher.dispatch_event_fn(event, src, dst)
-
-    // Dispatch multiple events
-    events := [Event{id: 1}, Event{id: 2}, Event{id: 3}]
-    dispatcher.dispatch_events_fn(events, src, dst)
-
-    // Dispatch event with timeout
-    timeout := Ticker{duration: 2000} // 2 seconds
-    dispatcher.dispatch_event_with_timeout_fn(event, src, dst, timeout)
-
-    // Dispatch multiple events with timeout
-    dispatcher.dispatch_events_with_timeout_fn(events, src, dst, timeout)
-}
-
-```
-
-In `V` language to create V project issue the following.
-
-```shell
-v new <v-project-name> 
-```
-
-To create V `interfaces` project issue the followng.
-
-```shell
-v new interfaces
-```
-The resulting V project tree shows as follows.
-
-```shell
-interfaces
-├── src
-│   └── main.v
-└── v.mod
-```
-
-To compile the project into .exe issue the following.
-
-```shell
-v .
-```
-
-V is totally trivial to create, compile and run projects.
-
-To run the .exe issue the following.
-
-```shell
-./interfaces
-```
-
 
 
 

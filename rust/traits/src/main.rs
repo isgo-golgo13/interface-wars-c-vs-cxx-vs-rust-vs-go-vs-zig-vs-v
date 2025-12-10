@@ -19,9 +19,9 @@ trait Dispatcher {
     fn dispatch_events_with_timeout(&self, events: &[Event], src: &Endpoint, dst: &Endpoint, timeout: Duration) -> Result;
 }
 
-struct MyDispatcher;
+struct EventDispatcher;
 
-impl Dispatcher for MyDispatcher {
+impl Dispatcher for EventDispatcher {
     fn dispatch_event(&self, event: &Event, src: &Endpoint, dst: &Endpoint) -> Result {
         println!("Dispatching event with ID {} from {} to {}", event.id, src.address, dst.address);
         Result { status: 0 } // success
@@ -46,7 +46,7 @@ impl Dispatcher for MyDispatcher {
 }
 
 fn main() {
-    let dispatcher = MyDispatcher;
+    let dispatcher = EventDispatcher;
     let event = Event { id: 1 };
     let src = Endpoint { address: "Source".to_string() };
     let dst = Endpoint { address: "Destination".to_string() };
