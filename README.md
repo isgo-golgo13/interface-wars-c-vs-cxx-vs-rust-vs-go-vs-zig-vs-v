@@ -1,4 +1,4 @@
-# Interfaces War of C23, C++23, Rust, Go 1.23 and Zig
+# Interfaces Arena and Styles of C23, C++23, Rust, Go 1.23, and Zig
 Interfaces War and Styles of C23 (FPs), C++23, Rust (Traits), Go 1.23 and Zig
 
 
